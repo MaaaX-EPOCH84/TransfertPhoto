@@ -17,6 +17,9 @@ cmake --build build --config Release --parallel 4
 ctest --test-dir build -C Release --output-on-failure
 ```
 
+L'exécutable Linux publié par la CI est construit sous Ubuntu 22.04 et
+demande la glibc 2.35 ou plus récente.
+
 wxWidgets est téléchargé et compilé en statique à la première configuration,
 ce qui prend plusieurs minutes.
 
