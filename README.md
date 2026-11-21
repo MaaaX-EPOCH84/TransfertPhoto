@@ -19,3 +19,9 @@ ctest --test-dir build -C Release --output-on-failure
 
 wxWidgets est téléchargé et compilé en statique à la première configuration,
 ce qui prend plusieurs minutes.
+
+## Licence
+
+TransfertPhoto est un logiciel libre, distribué sous la licence publique
+générale GNU, version 3 ou toute version ultérieure (GPL-3.0-or-later). Le
+texte complet est dans le fichier `LICENSE`.
