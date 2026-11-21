@@ -30,3 +30,10 @@ FetchContent_Declare(wxWidgets
     SYSTEM
     EXCLUDE_FROM_ALL)
 FetchContent_MakeAvailable(wxWidgets)
+
+# Le zlib embarqué n'inclut <unistd.h> que si son ./configure l'y autorise, et
+# la construction CMake de wxWidgets ne le lance pas. Sans cela read(), write(),
+# close() et lseek() restent non déclarés, ce que GCC refuse depuis sa version 14.
+if(UNIX AND TARGET wxzlib)
+    target_compile_definitions(wxzlib PRIVATE Z_HAVE_UNISTD_H)
+endif()
