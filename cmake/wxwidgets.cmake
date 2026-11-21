@@ -16,9 +16,10 @@ foreach(lib IN ITEMS ZLIB EXPAT LIBJPEG LIBPNG LIBTIFF REGEX NANOSVG)
 endforeach()
 
 # Not needed by the application; each of these costs build time, and several
-# pull in system libraries.
+# pull in system libraries. wxHTML stays: the built-in help controller, enabled
+# by default, refuses to compile without it.
 foreach(feature IN ITEMS
-        STC WEBVIEW MEDIACTRL RICHTEXT RIBBON PROPGRID AUI HTML XRC
+        STC WEBVIEW MEDIACTRL RICHTEXT RIBBON PROPGRID AUI XRC
         OPENGL WEBREQUEST LIBLZMA LIBSDL LIBNOTIFY LIBMSPACK LIBGNOMEVFS)
     set(wxUSE_${feature} OFF CACHE BOOL "" FORCE)
 endforeach()
