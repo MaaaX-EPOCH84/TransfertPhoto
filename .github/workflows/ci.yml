@@ -38,8 +38,10 @@ jobs:
       - name: Configurer
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
+      # Un nombre explicite : avec make, --parallel seul lance un nombre de
+      # tâches illimité, qui épuise la mémoire de la machine.
       - name: Construire
-        run: cmake --build build --config Release --parallel
+        run: cmake --build build --config Release --parallel 4
 
       - name: Tester
         run: ctest --test-dir build -C Release --output-on-failure
