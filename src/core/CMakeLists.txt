@@ -1,4 +1,4 @@
-# Application logic, free of any GUI dependency so that it can be tested alone.
+# La logique de l'application, sans aucune dépendance graphique, pour être testée seule.
 add_library(transfertphoto_core STATIC
     version.cpp
     version.hpp)

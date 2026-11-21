@@ -29,38 +29,38 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Install GTK 3
+      - name: Installer GTK 3
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends libgtk-3-dev
 
-      - name: Configure
+      - name: Configurer
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
-      - name: Build
+      - name: Construire
         run: cmake --build build --config Release --parallel
 
-      - name: Test
+      - name: Tester
         run: ctest --test-dir build -C Release --output-on-failure
 
-      # Each step also prints what the binary links against, so that a new
-      # runtime dependency shows up in the log.
-      - name: Package (Linux)
+      # Chaque étape affiche aussi ce à quoi le binaire est lié, pour qu'une
+      # nouvelle dépendance à l'exécution se voie dans le journal.
+      - name: Empaqueter (Linux)
         if: runner.os == 'Linux'
         run: |
           ldd build/bin/TransfertPhoto
           mkdir dist
           tar -C build/bin -czf dist/${{ matrix.artifact }}.tar.gz TransfertPhoto
 
-      - name: Package (Windows)
+      - name: Empaqueter (Windows)
         if: runner.os == 'Windows'
         run: |
           ldd build/bin/Release/TransfertPhoto.exe || true
           mkdir dist
           cp build/bin/Release/TransfertPhoto.exe dist/
 
-      - name: Package (macOS)
+      - name: Empaqueter (macOS)
         if: runner.os == 'macOS'
         run: |
           lipo -archs build/bin/TransfertPhoto.app/Contents/MacOS/TransfertPhoto

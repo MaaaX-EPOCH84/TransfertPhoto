@@ -15,11 +15,11 @@ set_target_properties(TransfertPhoto PROPERTIES
     MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
 
 if(WIN32)
-    # The resource script brings the wxWidgets manifest: themed controls and
-    # per-monitor DPI awareness.
+    # Le script de ressources apporte le manifeste de wxWidgets : contrôles
+    # au thème du système et prise en compte de la densité de chaque écran.
     target_sources(TransfertPhoto PRIVATE app.rc)
     target_compile_definitions(TransfertPhoto PRIVATE wxUSE_DPI_AWARE_MANIFEST=2)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    # GTK stays a system dependency; the C++ runtime does not have to.
+    # GTK reste une dépendance du système ; le runtime C++ n'a pas à l'être.
     target_link_options(TransfertPhoto PRIVATE -static-libstdc++ -static-libgcc)
 endif()

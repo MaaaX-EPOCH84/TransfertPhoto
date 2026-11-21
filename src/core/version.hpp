@@ -4,7 +4,7 @@
 
 namespace transfertphoto {
 
-// Version of the application, as declared by the build ("major.minor.patch").
+// Version de l'application, telle que la déclare la construction ("majeur.mineur.correctif").
 [[nodiscard]] std::string_view version() noexcept;
 
 } // namespace transfertphoto

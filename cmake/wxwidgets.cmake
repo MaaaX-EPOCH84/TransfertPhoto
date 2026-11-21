@@ -1,23 +1,23 @@
-# wxWidgets, built from source as static libraries with the project.
+# wxWidgets, compilé depuis ses sources en bibliothèques statiques avec le projet.
 #
-# The release archive is used rather than a git checkout because it already
-# contains the bundled third-party sources (zlib, libpng, libjpeg, ...), which
-# are git submodules upstream.
+# L'archive de release est préférée à un clone Git parce qu'elle contient déjà
+# les sources tierces embarquées (zlib, libpng, libjpeg...), qui sont des
+# sous-modules Git en amont.
 
 include(FetchContent)
 
 set(wxBUILD_SHARED OFF CACHE BOOL "" FORCE)
 set(wxBUILD_INSTALL OFF CACHE BOOL "" FORCE)
 
-# Bundled copies everywhere: a system copy would become a runtime dependency
-# of the single-file executable.
+# Copies embarquées partout : une copie du système deviendrait une dépendance
+# à l'exécution de l'exécutable unique.
 foreach(lib IN ITEMS ZLIB EXPAT LIBJPEG LIBPNG LIBTIFF REGEX NANOSVG)
     set(wxUSE_${lib} builtin CACHE STRING "" FORCE)
 endforeach()
 
-# Not needed by the application; each of these costs build time, and several
-# pull in system libraries. wxHTML stays: the built-in help controller, enabled
-# by default, refuses to compile without it.
+# Inutiles à l'application ; chacun coûte du temps de compilation, et plusieurs
+# tirent des bibliothèques du système. wxHTML reste : l'aide intégrée, active
+# par défaut, refuse de compiler sans lui.
 foreach(feature IN ITEMS
         STC WEBVIEW MEDIACTRL RICHTEXT RIBBON PROPGRID AUI XRC
         OPENGL WEBREQUEST LIBLZMA LIBSDL LIBNOTIFY LIBMSPACK LIBGNOMEVFS)

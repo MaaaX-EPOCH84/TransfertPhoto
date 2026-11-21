@@ -18,7 +18,7 @@ public:
         const auto title = wxString::Format(
             "TransfertPhoto %s", wxString::FromUTF8(version.data(), version.size()));
 
-        // Not leaked: wxWidgets owns top-level windows and destroys them on close.
+        // Pas une fuite : wxWidgets possède les fenêtres de premier niveau et les détruit à la fermeture.
         auto* frame = new wxFrame(nullptr, wxID_ANY, title);
         frame->Show();
         return true;
