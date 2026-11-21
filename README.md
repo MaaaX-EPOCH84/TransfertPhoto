@@ -1,0 +1,21 @@
+# TransfertPhoto
+
+Utilitaire de transfert de photos et de vidéos d'un répertoire, d'un appareil
+photo ou d'un téléphone vers un répertoire, avec détection des doublons et
+classement par année, mois et jour.
+
+Projet en cours de démarrage : seule la chaîne de construction est en place.
+
+## Construire
+
+Prérequis : CMake 3.28 ou plus récent et un compilateur C++20. Sous Linux, les
+fichiers de développement de GTK 3 (`libgtk-3-dev` sous Debian et Ubuntu).
+
+```sh
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release --parallel
+ctest --test-dir build -C Release --output-on-failure
+```
+
+wxWidgets est téléchargé et compilé en statique à la première configuration,
+ce qui prend plusieurs minutes.
