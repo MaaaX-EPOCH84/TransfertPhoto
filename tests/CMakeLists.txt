@@ -2,6 +2,12 @@ include(FetchContent)
 
 # Catch2, compilé avec le projet. Étiquette précise : une branche rendrait la
 # construction non reproductible. Git est requis (installé dans la CI).
+# Catch2 doit être compilé dans la même norme que les tests : en C++14, sous
+# MSVC et Apple Clang, il n'affiche pas les std::string_view, et l'édition de
+# liens échoue. La portée est celle de ce répertoire.
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 FetchContent_Declare(Catch2
     GIT_REPOSITORY https://github.com/catchorg/Catch2.git
     GIT_TAG v3.16.1
