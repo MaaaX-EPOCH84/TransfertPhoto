@@ -1,5 +1,8 @@
 # La logique de l'application, sans aucune dépendance graphique, pour être testée seule.
 add_library(transfertphoto_core STATIC
+    directory_source.cpp
+    directory_source.hpp
+    source.hpp
     version.cpp
     version.hpp)
 add_library(transfertphoto::core ALIAS transfertphoto_core)

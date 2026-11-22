@@ -21,6 +21,7 @@ list(APPEND CMAKE_MODULE_PATH "${catch2_SOURCE_DIR}/extras")
 include(Catch)
 
 add_executable(transfertphoto_tests
+    directory_source_test.cpp
     version_test.cpp)
 target_link_libraries(transfertphoto_tests PRIVATE
     transfertphoto::core
