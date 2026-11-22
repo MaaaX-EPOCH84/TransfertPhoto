@@ -1,14 +1,8 @@
 #include "core/version.hpp"
 
-#include <cstdlib>
-#include <iostream>
+#include <catch2/catch_test_macros.hpp>
 
-int main()
+TEST_CASE("la version du cœur est celle déclarée par la construction")
 {
-    const auto actual = transfertphoto::version();
-    if (actual != EXPECTED_VERSION) {
-        std::cerr << "version() : obtenu \"" << actual << "\", attendu \"" EXPECTED_VERSION "\"\n";
-        return EXIT_FAILURE;
-    }
-    return EXIT_SUCCESS;
+    CHECK(transfertphoto::version() == EXPECTED_VERSION);
 }

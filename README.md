@@ -23,6 +23,16 @@ demande la glibc 2.35 ou plus récente.
 wxWidgets est téléchargé et compilé en statique à la première configuration,
 ce qui prend plusieurs minutes.
 
+Pour ne tester que le cœur, sans GTK 3 ni wxWidgets :
+
+```sh
+cmake -B build -DTRANSFERTPHOTO_BUILD_APP=OFF
+cmake --build build --parallel 4
+ctest --test-dir build --output-on-failure
+```
+
+Catch2 est récupéré par git à la configuration, git doit donc être installé.
+
 ## Licence
 
 TransfertPhoto est un logiciel libre, distribué sous la licence publique

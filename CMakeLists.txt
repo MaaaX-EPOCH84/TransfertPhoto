@@ -7,6 +7,7 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Version minimale de macOS")
 project(TransfertPhoto VERSION 0.1.0 LANGUAGES CXX)
 
 option(TRANSFERTPHOTO_BUILD_TESTS "Construire les tests unitaires" ON)
+option(TRANSFERTPHOTO_BUILD_APP "Construire l'application graphique (wxWidgets)" ON)
 
 # Runtime C statique : le livrable tient en un seul fichier et ne doit pas
 # dépendre du redistribuable Visual C++. À poser avant la déclaration de
@@ -21,8 +22,12 @@ target_compile_options(transfertphoto_warnings INTERFACE
 
 add_subdirectory(src/core)
 
-include(cmake/wxwidgets.cmake)
-add_subdirectory(src/app)
+# Désactivable pour tester le cœur sur une machine sans GTK 3 ni compilation
+# de wxWidgets.
+if(TRANSFERTPHOTO_BUILD_APP)
+    include(cmake/wxwidgets.cmake)
+    add_subdirectory(src/app)
+endif()
 
 if(TRANSFERTPHOTO_BUILD_TESTS)
     enable_testing()
