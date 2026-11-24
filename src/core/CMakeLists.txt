@@ -1,5 +1,7 @@
 # La logique de l'application, sans aucune dépendance graphique, pour être testée seule.
 add_library(transfertphoto_core STATIC
+    companion.cpp
+    companion.hpp
     directory_source.cpp
     directory_source.hpp
     media_format.cpp

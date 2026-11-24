@@ -21,6 +21,7 @@ list(APPEND CMAKE_MODULE_PATH "${catch2_SOURCE_DIR}/extras")
 include(Catch)
 
 add_executable(transfertphoto_tests
+    companion_test.cpp
     directory_source_test.cpp
     media_format_test.cpp
     media_signature_test.cpp
