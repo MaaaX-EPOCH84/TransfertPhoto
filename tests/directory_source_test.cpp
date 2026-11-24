@@ -1,15 +1,14 @@
 #include "core/directory_source.hpp"
 
+#include "test_files.hpp"
+
 #include <catch2/catch_test_macros.hpp>
 
 #include <algorithm>
 #include <array>
-#include <atomic>
 #include <chrono>
 #include <cstddef>
 #include <filesystem>
-#include <fstream>
-#include <random>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -32,44 +31,11 @@ using transfertphoto::ScanOutcome;
 using transfertphoto::ScanResult;
 using transfertphoto::SourceEntry;
 
+using test_support::TempDir;
+using test_support::utf8_path;
+using test_support::write_file;
+
 namespace {
-
-// Dossier temporaire propre à un test, effacé à la sortie.
-class TempDir {
-public:
-    TempDir()
-    {
-        static std::atomic<unsigned> counter{0};
-        std::random_device random;
-        path_ = fs::temp_directory_path()
-                / ("transfertphoto-" + std::to_string(random()) + "-" + std::to_string(counter++));
-        fs::create_directories(path_);
-    }
-    TempDir(const TempDir&) = delete;
-    TempDir& operator=(const TempDir&) = delete;
-    ~TempDir()
-    {
-        std::error_code error;
-        fs::remove_all(path_, error);
-    }
-
-    [[nodiscard]] const fs::path& path() const { return path_; }
-
-private:
-    fs::path path_;
-};
-
-fs::path utf8_path(std::string_view text)
-{
-    return fs::path(std::u8string(text.begin(), text.end()));
-}
-
-void write_file(const fs::path& path, std::string_view content)
-{
-    fs::create_directories(path.parent_path());
-    std::ofstream file(path, std::ios::binary);
-    file.write(content.data(), static_cast<std::streamsize>(content.size()));
-}
 
 struct Collected {
     ScanResult result;

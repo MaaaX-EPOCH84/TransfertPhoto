@@ -24,8 +24,10 @@ add_executable(transfertphoto_tests
     companion_test.cpp
     directory_source_test.cpp
     entry_filter_test.cpp
+    inventory_test.cpp
     media_format_test.cpp
     media_signature_test.cpp
+    test_files.hpp
     version_test.cpp)
 target_link_libraries(transfertphoto_tests PRIVATE
     transfertphoto::core
