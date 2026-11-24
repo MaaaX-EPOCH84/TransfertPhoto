@@ -2,6 +2,8 @@
 add_library(transfertphoto_core STATIC
     directory_source.cpp
     directory_source.hpp
+    media_format.cpp
+    media_format.hpp
     source.hpp
     version.cpp
     version.hpp)

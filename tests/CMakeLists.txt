@@ -22,6 +22,7 @@ include(Catch)
 
 add_executable(transfertphoto_tests
     directory_source_test.cpp
+    media_format_test.cpp
     version_test.cpp)
 target_link_libraries(transfertphoto_tests PRIVATE
     transfertphoto::core
