@@ -4,6 +4,8 @@ add_library(transfertphoto_core STATIC
     companion.hpp
     directory_source.cpp
     directory_source.hpp
+    entry_filter.cpp
+    entry_filter.hpp
     media_format.cpp
     media_format.hpp
     media_signature.cpp
