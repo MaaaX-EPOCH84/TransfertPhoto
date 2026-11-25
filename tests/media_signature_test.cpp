@@ -251,6 +251,8 @@ TEST_CASE("les marques de la boite ftyp separent HEIF, CR3 et video")
     // HEIF par sa marque générique.
     CHECK(verdict(MediaFormat::heif, "\0\0\0\x18" "ftypmif1\0\0\0\0mif1heic"sv) == SignatureVerdict::matches);
     CHECK(verdict(MediaFormat::heif, "\0\0\0\x18" "ftypmsf1\0\0\0\0msf1hevc"sv) == SignatureVerdict::matches);
+    // Marque des HEIF 10 bits, celle que je crois être écrite par les boîtiers Canon.
+    CHECK(verdict(MediaFormat::heif, "\0\0\0\x18" "ftypheix\0\0\0\0mif1heix"sv) == SignatureVerdict::matches);
 
     // Une photo HEIC renommée en vidéo, et l'inverse.
     const auto heic_as_mp4 = check_signature(MediaFormat::mp4, sample(MediaFormat::heif));

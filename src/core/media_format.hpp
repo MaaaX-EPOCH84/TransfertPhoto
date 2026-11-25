@@ -12,7 +12,7 @@ enum class MediaKind {
 };
 
 // Un format par entrée de la liste arrêtée ; plusieurs extensions peuvent
-// désigner le même (jpg et jpeg, tif et tiff, heic et heif, mts et m2ts).
+// désigner le même (jpg et jpeg, tif et tiff, heic, heif et hif, mts et m2ts).
 enum class MediaFormat {
     jpeg,
     png,

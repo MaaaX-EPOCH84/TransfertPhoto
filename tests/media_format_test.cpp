@@ -31,7 +31,7 @@ std::string to_upper(std::string_view text)
 
 } // namespace
 
-TEST_CASE("la table compte 17 extensions photo et 8 video, sans doublon")
+TEST_CASE("la table compte 18 extensions photo et 8 video, sans doublon")
 {
     std::set<std::string_view> seen;
     std::size_t photos = 0;
@@ -40,13 +40,13 @@ TEST_CASE("la table compte 17 extensions photo et 8 video, sans doublon")
         CHECK(seen.insert(entry.extension).second);
         (kind_of(entry.format) == MediaKind::photo ? photos : videos) += 1;
     }
-    CHECK(photos == 17);
+    CHECK(photos == 18);
     CHECK(videos == 8);
 }
 
 TEST_CASE("la table porte exactement les extensions decidees")
 {
-    const std::set<std::string_view> photos{"jpg", "jpeg", "png", "heic", "heif", "tif",
+    const std::set<std::string_view> photos{"jpg", "jpeg", "png", "heic", "heif", "hif", "tif",
                                             "tiff", "webp", "gif", "dng", "cr2", "cr3",
                                             "nef", "arw", "raf", "orf", "rw2"};
     const std::set<std::string_view> videos{"mp4", "mov", "m4v", "avi",
@@ -81,6 +81,7 @@ TEST_CASE("les extensions synonymes donnent le meme format")
     CHECK(format_from_extension("a.JPEG") == MediaFormat::jpeg);
     CHECK(format_from_extension("a.heic") == MediaFormat::heif);
     CHECK(format_from_extension("a.HEIF") == MediaFormat::heif);
+    CHECK(format_from_extension("DCIM/100EOSR5/IMG_0001.HIF") == MediaFormat::heif);
     CHECK(format_from_extension("a.tif") == MediaFormat::tiff);
     CHECK(format_from_extension("a.tiff") == MediaFormat::tiff);
     CHECK(format_from_extension("00001.MTS") == MediaFormat::mpeg_ts);

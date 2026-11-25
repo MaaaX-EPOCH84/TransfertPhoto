@@ -14,6 +14,8 @@ constexpr std::array known_extensions{
     MediaExtension{"png", MediaFormat::png},
     MediaExtension{"heic", MediaFormat::heif},
     MediaExtension{"heif", MediaFormat::heif},
+    // HEIF des boîtiers Canon (R5, R6…), en 10 bits.
+    MediaExtension{"hif", MediaFormat::heif},
     MediaExtension{"tif", MediaFormat::tiff},
     MediaExtension{"tiff", MediaFormat::tiff},
     MediaExtension{"webp", MediaFormat::webp},
