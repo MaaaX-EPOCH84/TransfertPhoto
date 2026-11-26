@@ -14,6 +14,8 @@ add_library(transfertphoto_core STATIC
     media_format.hpp
     media_signature.cpp
     media_signature.hpp
+    name_date.cpp
+    name_date.hpp
     photo_date.cpp
     photo_date.hpp
     source.hpp

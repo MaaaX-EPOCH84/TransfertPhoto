@@ -31,6 +31,7 @@ add_executable(transfertphoto_tests
     media_format_test.cpp
     media_signature_test.cpp
     memory_source.hpp
+    name_date_test.cpp
     photo_date_test.cpp
     source_io_test.cpp
     test_files.hpp
