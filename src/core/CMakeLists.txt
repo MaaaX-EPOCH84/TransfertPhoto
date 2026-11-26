@@ -8,10 +8,14 @@ add_library(transfertphoto_core STATIC
     entry_filter.hpp
     inventory.cpp
     inventory.hpp
+    local_date_time.cpp
+    local_date_time.hpp
     media_format.cpp
     media_format.hpp
     media_signature.cpp
     media_signature.hpp
+    photo_date.cpp
+    photo_date.hpp
     source.hpp
     source_io.cpp
     source_io.hpp

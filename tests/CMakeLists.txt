@@ -27,8 +27,11 @@ add_executable(transfertphoto_tests
     exif_samples.hpp
     exiv2_test.cpp
     inventory_test.cpp
+    local_date_time_test.cpp
     media_format_test.cpp
     media_signature_test.cpp
+    memory_source.hpp
+    photo_date_test.cpp
     source_io_test.cpp
     test_files.hpp
     version_test.cpp)
