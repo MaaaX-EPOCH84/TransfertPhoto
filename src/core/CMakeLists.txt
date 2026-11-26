@@ -43,6 +43,8 @@ add_library(transfertphoto_core STATIC
     source_io.hpp
     transfer_plan.cpp
     transfer_plan.hpp
+    trash.cpp
+    trash.hpp
     version.cpp
     version.hpp
     video_date.cpp
@@ -57,3 +59,13 @@ target_compile_definitions(transfertphoto_core
 target_link_libraries(transfertphoto_core
     PUBLIC transfertphoto::exiv2
     PRIVATE transfertphoto::xxhash transfertphoto_warnings)
+
+# La corbeille : Foundation sous macOS (un fichier Objective-C++), le shell
+# et COM sous Windows ; sous Linux, rien à lier.
+if(APPLE)
+    enable_language(OBJCXX)
+    target_sources(transfertphoto_core PRIVATE trash_mac.mm)
+    target_link_libraries(transfertphoto_core PRIVATE "-framework Foundation")
+elseif(WIN32)
+    target_link_libraries(transfertphoto_core PRIVATE ole32 shell32 uuid)
+endif()
