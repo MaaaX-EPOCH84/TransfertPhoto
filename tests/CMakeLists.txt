@@ -27,6 +27,7 @@ add_executable(transfertphoto_tests
     entry_filter_test.cpp
     exif_samples.hpp
     exiv2_test.cpp
+    file_hash_test.cpp
     implausible_date_test.cpp
     inventory_test.cpp
     local_date_time_test.cpp

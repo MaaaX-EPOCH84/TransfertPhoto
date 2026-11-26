@@ -22,6 +22,7 @@ target_compile_options(transfertphoto_warnings INTERFACE
 
 include(cmake/zlib.cmake)
 include(cmake/exiv2.cmake)
+include(cmake/xxhash.cmake)
 
 add_subdirectory(src/core)
 

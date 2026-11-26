@@ -8,6 +8,8 @@ add_library(transfertphoto_core STATIC
     directory_source.hpp
     entry_filter.cpp
     entry_filter.hpp
+    file_hash.cpp
+    file_hash.hpp
     implausible_date.cpp
     implausible_date.hpp
     inventory.cpp
@@ -38,4 +40,4 @@ target_compile_definitions(transfertphoto_core
 # Exiv2 en PUBLIC : source_io.hpp expose ses types.
 target_link_libraries(transfertphoto_core
     PUBLIC transfertphoto::exiv2
-    PRIVATE transfertphoto_warnings)
+    PRIVATE transfertphoto::xxhash transfertphoto_warnings)
