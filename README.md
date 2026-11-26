@@ -31,7 +31,8 @@ cmake --build build --parallel 4
 ctest --test-dir build --output-on-failure
 ```
 
-Catch2 est récupéré par git à la configuration, git doit donc être installé.
+Catch2 et Exiv2 sont récupérés par git à la configuration, git doit donc être
+installé. zlib, partagé par wxWidgets et Exiv2, est téléchargé de la même façon.
 
 ## Licence
 

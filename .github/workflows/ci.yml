@@ -61,6 +61,15 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           ldd build/bin/TransfertPhoto
+          # ldd montre aussi le zlib que GTK tire pour lui ; seules les
+          # dépendances directes disent si le nôtre a été pris en statique.
+          readelf -d build/bin/TransfertPhoto | grep NEEDED
+          if readelf -d build/bin/TransfertPhoto | grep NEEDED | grep -q 'libz\.'; then
+            echo "::error::l'exécutable dépend du zlib du système au lieu du sien"
+            exit 1
+          fi
+          echo "Tests (Exiv2 et zlib compris) :"
+          readelf -d build/tests/transfertphoto_tests | grep NEEDED
           glibc=$(objdump -T build/bin/TransfertPhoto | grep -o 'GLIBC_[0-9.]*' | sort -uV | tail -1)
           echo "glibc requise : $glibc"
           if [ "$(printf '%s\n' GLIBC_2.35 "$glibc" | sort -V | tail -1)" != GLIBC_2.35 ]; then
@@ -74,6 +83,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           ldd build/bin/Release/TransfertPhoto.exe || true
+          echo "Tests (Exiv2 et zlib compris) :"
+          ldd build/tests/Release/transfertphoto_tests.exe || true
           mkdir dist
           cp build/bin/Release/TransfertPhoto.exe dist/
 
@@ -82,6 +93,12 @@ jobs:
         run: |
           lipo -archs build/bin/TransfertPhoto.app/Contents/MacOS/TransfertPhoto
           otool -L build/bin/TransfertPhoto.app/Contents/MacOS/TransfertPhoto
+          if otool -L build/bin/TransfertPhoto.app/Contents/MacOS/TransfertPhoto | grep -q 'libz\.'; then
+            echo "::error::l'exécutable dépend du zlib du système au lieu du sien"
+            exit 1
+          fi
+          echo "Tests (Exiv2 et zlib compris) :"
+          otool -L build/tests/transfertphoto_tests
           mkdir dist
           ditto -c -k --keepParent build/bin/TransfertPhoto.app dist/${{ matrix.artifact }}.zip
 

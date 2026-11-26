@@ -11,9 +11,13 @@ set(wxBUILD_INSTALL OFF CACHE BOOL "" FORCE)
 
 # Copies embarquées partout : une copie du système deviendrait une dépendance
 # à l'exécution de l'exécutable unique.
-foreach(lib IN ITEMS ZLIB EXPAT LIBJPEG LIBPNG LIBTIFF REGEX NANOSVG)
+foreach(lib IN ITEMS EXPAT LIBJPEG LIBPNG LIBTIFF REGEX NANOSVG)
     set(wxUSE_${lib} builtin CACHE STRING "" FORCE)
 endforeach()
+
+# Sauf zlib : « sys » lui fait appeler find_package(ZLIB), qui trouve la copie
+# commune de cmake/zlib.cmake, partagée avec Exiv2.
+set(wxUSE_ZLIB sys CACHE STRING "" FORCE)
 
 # Inutiles à l'application ; chacun coûte du temps de compilation, et plusieurs
 # tirent des bibliothèques du système. wxHTML reste : l'aide intégrée, active
@@ -31,9 +35,8 @@ FetchContent_Declare(wxWidgets
     EXCLUDE_FROM_ALL)
 FetchContent_MakeAvailable(wxWidgets)
 
-# Le zlib embarqué n'inclut <unistd.h> que si son ./configure l'y autorise, et
-# la construction CMake de wxWidgets ne le lance pas. Sans cela read(), write(),
-# close() et lseek() restent non déclarés, ce que GCC refuse depuis sa version 14.
-if(UNIX AND TARGET wxzlib)
-    target_compile_definitions(wxzlib PRIVATE Z_HAVE_UNISTD_H)
+# wxWidgets ne trouvant pas zlib reprendrait sa propre copie sans rien dire,
+# et l'exécutable en contiendrait deux.
+if(TARGET wxzlib)
+    message(FATAL_ERROR "wxWidgets a pris son zlib embarqué au lieu de la copie commune")
 endif()

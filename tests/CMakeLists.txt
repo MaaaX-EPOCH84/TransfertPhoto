@@ -24,6 +24,7 @@ add_executable(transfertphoto_tests
     companion_test.cpp
     directory_source_test.cpp
     entry_filter_test.cpp
+    exiv2_test.cpp
     inventory_test.cpp
     media_format_test.cpp
     media_signature_test.cpp
@@ -31,6 +32,7 @@ add_executable(transfertphoto_tests
     version_test.cpp)
 target_link_libraries(transfertphoto_tests PRIVATE
     transfertphoto::core
+    transfertphoto::exiv2
     transfertphoto_warnings
     Catch2::Catch2WithMain)
 target_compile_definitions(transfertphoto_tests

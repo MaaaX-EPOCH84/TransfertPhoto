@@ -20,6 +20,9 @@ target_compile_options(transfertphoto_warnings INTERFACE
     $<$<CXX_COMPILER_ID:MSVC>:/W4 /permissive- /utf-8>
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic>)
 
+include(cmake/zlib.cmake)
+include(cmake/exiv2.cmake)
+
 add_subdirectory(src/core)
 
 # Désactivable pour tester le cœur sur une machine sans GTK 3 ni compilation
