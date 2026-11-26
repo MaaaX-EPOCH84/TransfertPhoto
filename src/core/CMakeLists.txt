@@ -39,6 +39,8 @@ add_library(transfertphoto_core STATIC
     source.hpp
     source_io.cpp
     source_io.hpp
+    transfer_plan.cpp
+    transfer_plan.hpp
     version.cpp
     version.hpp
     video_date.cpp

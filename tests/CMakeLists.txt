@@ -45,6 +45,7 @@ add_executable(transfertphoto_tests
     photo_date_test.cpp
     source_io_test.cpp
     test_files.hpp
+    transfer_plan_test.cpp
     version_test.cpp
     video_date_test.cpp
     video_samples.hpp)
