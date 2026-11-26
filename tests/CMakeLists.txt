@@ -27,6 +27,7 @@ add_executable(transfertphoto_tests
     destination_test.cpp
     duplicate_decisions_test.cpp
     duplicate_situations_test.cpp
+    duplicates_end_to_end_test.cpp
     duplicates_test.cpp
     directory_source_test.cpp
     entry_filter_test.cpp
