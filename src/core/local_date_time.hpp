@@ -37,6 +37,10 @@ struct LocalDateTime {
 // Un instant, en secondes depuis le 1er janvier 1970 UTC, en calendrier UTC.
 [[nodiscard]] LocalDateTime utc_from_unix_seconds(std::int64_t seconds) noexcept;
 
+// L'inverse : la date lue comme une heure UTC, en secondes depuis 1970. Sert
+// à mesurer l'écart entre deux dates de calendrier, sans fuseau.
+[[nodiscard]] std::int64_t unix_seconds_as_utc(const LocalDateTime& value) noexcept;
+
 // Le même instant à l'heure locale de cette machine, heure d'été comprise, par
 // les règles du système. Si le système ne sait pas convertir cet instant
 // (Windows refuse ce qui précède 1970), il est rendu en UTC.

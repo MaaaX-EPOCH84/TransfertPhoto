@@ -89,6 +89,18 @@ LocalDateTime utc_from_unix_seconds(std::int64_t seconds) noexcept
     return value;
 }
 
+std::int64_t unix_seconds_as_utc(const LocalDateTime& value) noexcept
+{
+    // « days_from_civil » de Howard Hinnant.
+    const std::int64_t year = value.year - (value.month <= 2 ? 1 : 0);
+    const std::int64_t era = (year >= 0 ? year : year - 399) / 400;
+    const auto year_of_era = static_cast<unsigned>(year - era * 400);
+    const unsigned day_of_year = (153 * (value.month > 2 ? value.month - 3 : value.month + 9) + 2) / 5 + value.day - 1;
+    const unsigned day_of_era = year_of_era * 365 + year_of_era / 4 - year_of_era / 100 + day_of_year;
+    const std::int64_t days = era * 146'097 + static_cast<std::int64_t>(day_of_era) - 719'468;
+    return days * 86'400 + value.hour * 3600 + value.minute * 60 + value.second;
+}
+
 LocalDateTime local_from_unix_seconds(std::int64_t seconds) noexcept
 {
     const auto instant = static_cast<std::time_t>(seconds);

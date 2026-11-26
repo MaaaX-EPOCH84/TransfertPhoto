@@ -8,6 +8,8 @@ add_library(transfertphoto_core STATIC
     directory_source.hpp
     entry_filter.cpp
     entry_filter.hpp
+    implausible_date.cpp
+    implausible_date.hpp
     inventory.cpp
     inventory.hpp
     local_date_time.cpp
