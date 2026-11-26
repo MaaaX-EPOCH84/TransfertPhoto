@@ -24,6 +24,7 @@ add_executable(transfertphoto_tests
     companion_test.cpp
     dating_test.cpp
     destination_test.cpp
+    duplicate_decisions_test.cpp
     duplicate_situations_test.cpp
     duplicates_test.cpp
     directory_source_test.cpp
