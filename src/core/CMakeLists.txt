@@ -1,5 +1,7 @@
 # La logique de l'application, sans aucune dépendance graphique, pour être testée seule.
 add_library(transfertphoto_core STATIC
+    byte_compare.cpp
+    byte_compare.hpp
     companion.cpp
     companion.hpp
     dating.cpp

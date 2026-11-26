@@ -21,6 +21,7 @@ list(APPEND CMAKE_MODULE_PATH "${catch2_SOURCE_DIR}/extras")
 include(Catch)
 
 add_executable(transfertphoto_tests
+    byte_compare_test.cpp
     companion_test.cpp
     dating_test.cpp
     destination_test.cpp
