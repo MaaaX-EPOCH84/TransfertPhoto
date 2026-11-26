@@ -4,6 +4,8 @@ add_library(transfertphoto_core STATIC
     companion.hpp
     dating.cpp
     dating.hpp
+    destination.cpp
+    destination.hpp
     directory_source.cpp
     directory_source.hpp
     entry_filter.cpp
