@@ -43,6 +43,7 @@ add_executable(transfertphoto_tests
     memory_source.hpp
     name_date_test.cpp
     photo_date_test.cpp
+    safe_copy_test.cpp
     source_io_test.cpp
     test_files.hpp
     transfer_plan_test.cpp

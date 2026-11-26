@@ -36,6 +36,8 @@ add_library(transfertphoto_core STATIC
     name_date.hpp
     photo_date.cpp
     photo_date.hpp
+    safe_copy.cpp
+    safe_copy.hpp
     source.hpp
     source_io.cpp
     source_io.hpp
