@@ -13,6 +13,8 @@ add_library(transfertphoto_core STATIC
     media_signature.cpp
     media_signature.hpp
     source.hpp
+    source_io.cpp
+    source_io.hpp
     version.cpp
     version.hpp)
 add_library(transfertphoto::core ALIAS transfertphoto_core)
@@ -21,4 +23,7 @@ target_compile_features(transfertphoto_core PUBLIC cxx_std_20)
 target_include_directories(transfertphoto_core PUBLIC "${PROJECT_SOURCE_DIR}/src")
 target_compile_definitions(transfertphoto_core
     PRIVATE TRANSFERTPHOTO_VERSION="${PROJECT_VERSION}")
-target_link_libraries(transfertphoto_core PRIVATE transfertphoto_warnings)
+# Exiv2 en PUBLIC : source_io.hpp expose ses types.
+target_link_libraries(transfertphoto_core
+    PUBLIC transfertphoto::exiv2
+    PRIVATE transfertphoto_warnings)

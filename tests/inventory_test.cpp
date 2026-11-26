@@ -124,8 +124,8 @@ public:
         return result;
     }
 
-    std::size_t read_head(std::string_view relative_path, std::span<std::byte> buffer,
-                          std::error_code& error) override
+    std::size_t read_range(std::string_view relative_path, std::uint64_t offset,
+                           std::span<std::byte> buffer, std::error_code& error) override
     {
         error.clear();
         if (vanishes_on_read)
@@ -136,9 +136,12 @@ public:
             return 0;
         }
         const auto& content = contents.at(path);
-        const auto count = std::min(buffer.size(), content.size());
+        if (offset >= content.size())
+            return 0;
+        const auto start = static_cast<std::size_t>(offset);
+        const auto count = std::min(buffer.size(), content.size() - start);
         for (std::size_t i = 0; i < count; ++i)
-            buffer[i] = static_cast<std::byte>(content[i]);
+            buffer[i] = static_cast<std::byte>(content[start + i]);
         return count;
     }
 

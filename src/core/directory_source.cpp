@@ -172,9 +172,15 @@ ScanResult DirectorySource::scan(const std::function<void(const SourceEntry&)>& 
     return result;
 }
 
-std::size_t DirectorySource::read_head(std::string_view relative_path,
-                                       std::span<std::byte> buffer,
-                                       std::error_code& error)
+std::optional<fs::path> DirectorySource::local_path(std::string_view relative_path) const
+{
+    return root_ / from_utf8(relative_path);
+}
+
+std::size_t DirectorySource::read_range(std::string_view relative_path,
+                                        std::uint64_t offset,
+                                        std::span<std::byte> buffer,
+                                        std::error_code& error)
 {
     error.clear();
     const fs::path path = root_ / from_utf8(relative_path);
@@ -188,7 +194,16 @@ std::size_t DirectorySource::read_head(std::string_view relative_path,
                                                : std::make_error_code(std::errc::no_such_file_or_directory);
         return 0;
     }
+    if (buffer.empty())
+        return 0;
 
+    // Un déplacement au-delà de la fin réussit, et la lecture qui suit ne rend
+    // rien : c'est le comportement promis.
+    file.seekg(static_cast<std::streamoff>(offset));
+    if (!file) {
+        error = std::make_error_code(std::errc::io_error);
+        return 0;
+    }
     file.read(reinterpret_cast<char*>(buffer.data()), static_cast<std::streamsize>(buffer.size()));
     if (file.bad()) {
         error = std::make_error_code(std::errc::io_error);

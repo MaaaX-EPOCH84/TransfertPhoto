@@ -3,7 +3,9 @@
 #include <chrono>
 #include <cstddef>
 #include <cstdint>
+#include <filesystem>
 #include <functional>
+#include <optional>
 #include <span>
 #include <stop_token>
 #include <string>
@@ -66,11 +68,31 @@ public:
     virtual ScanResult scan(const std::function<void(const SourceEntry&)>& on_entry,
                             std::stop_token stop) = 0;
 
-    // Lit le début d'un fichier dans buffer et rend le nombre d'octets lus,
-    // moins que la taille du tampon si le fichier est plus court.
-    virtual std::size_t read_head(std::string_view relative_path,
-                                  std::span<std::byte> buffer,
-                                  std::error_code& error) = 0;
+    // Lit dans buffer les octets d'un fichier à partir de offset, et rend le
+    // nombre d'octets lus : moins que la taille du tampon quand la fin du
+    // fichier arrive avant, zéro à partir de la fin, sans que ce soit une
+    // erreur. La signature ne lit que la tête ; les métadonnées vont chercher
+    // ce dont elles ont besoin n'importe où dans le fichier.
+    virtual std::size_t read_range(std::string_view relative_path,
+                                   std::uint64_t offset,
+                                   std::span<std::byte> buffer,
+                                   std::error_code& error) = 0;
+
+    std::size_t read_head(std::string_view relative_path,
+                          std::span<std::byte> buffer,
+                          std::error_code& error)
+    {
+        return read_range(relative_path, 0, buffer, error);
+    }
+
+    // Le chemin du fichier sur le système de fichiers de cette machine, quand
+    // la source en est un. Un téléphone n'en a pas. Sert à projeter un fichier
+    // en mémoire sans le lire en entier.
+    [[nodiscard]] virtual std::optional<std::filesystem::path>
+    local_path(std::string_view /*relative_path*/) const
+    {
+        return std::nullopt;
+    }
 };
 
 } // namespace transfertphoto

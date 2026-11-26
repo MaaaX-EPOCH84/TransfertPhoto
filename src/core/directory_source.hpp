@@ -21,9 +21,13 @@ public:
     ScanResult scan(const std::function<void(const SourceEntry&)>& on_entry,
                     std::stop_token stop) override;
 
-    std::size_t read_head(std::string_view relative_path,
-                          std::span<std::byte> buffer,
-                          std::error_code& error) override;
+    std::size_t read_range(std::string_view relative_path,
+                           std::uint64_t offset,
+                           std::span<std::byte> buffer,
+                           std::error_code& error) override;
+
+    [[nodiscard]] std::optional<std::filesystem::path>
+    local_path(std::string_view relative_path) const override;
 
 private:
     std::filesystem::path root_;

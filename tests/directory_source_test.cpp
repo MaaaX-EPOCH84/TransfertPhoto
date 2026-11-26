@@ -165,6 +165,75 @@ TEST_CASE("read_head accepte un chemin UTF-8")
     CHECK(!error);
 }
 
+TEST_CASE("read_range lit n'importe quelle plage du fichier")
+{
+    TempDir root;
+    write_file(root.path() / "photo.jpg", "0123456789");
+
+    DirectorySource source(root.path());
+    std::array<std::byte, 4> buffer{};
+    std::error_code error;
+
+    auto text = [&](std::size_t count) {
+        std::string result;
+        for (std::size_t i = 0; i < count; ++i)
+            result += static_cast<char>(buffer[i]);
+        return result;
+    };
+
+    SECTION("en tete")
+    {
+        CHECK(source.read_range("photo.jpg", 0, buffer, error) == 4);
+        CHECK(!error);
+        CHECK(text(4) == "0123");
+    }
+    SECTION("au milieu")
+    {
+        CHECK(source.read_range("photo.jpg", 3, buffer, error) == 4);
+        CHECK(!error);
+        CHECK(text(4) == "3456");
+    }
+    SECTION("en fin")
+    {
+        CHECK(source.read_range("photo.jpg", 6, buffer, error) == 4);
+        CHECK(!error);
+        CHECK(text(4) == "6789");
+    }
+    SECTION("a cheval sur la fin, lecture tronquee")
+    {
+        CHECK(source.read_range("photo.jpg", 8, buffer, error) == 2);
+        CHECK(!error);
+        CHECK(text(2) == "89");
+    }
+    SECTION("a partir de la fin et au-dela, rien sans erreur")
+    {
+        CHECK(source.read_range("photo.jpg", 10, buffer, error) == 0);
+        CHECK(!error);
+        CHECK(source.read_range("photo.jpg", 1000, buffer, error) == 0);
+        CHECK(!error);
+    }
+    SECTION("tampon de taille nulle")
+    {
+        CHECK(source.read_range("photo.jpg", 2, std::span<std::byte>{}, error) == 0);
+        CHECK(!error);
+    }
+    SECTION("fichier disparu")
+    {
+        fs::remove(root.path() / "photo.jpg");
+        CHECK(source.read_range("photo.jpg", 2, buffer, error) == 0);
+        CHECK(error == std::errc::no_such_file_or_directory);
+    }
+}
+
+TEST_CASE("un dossier donne le chemin local de ses fichiers")
+{
+    TempDir root;
+    DirectorySource source(root.path());
+    const auto path = source.local_path("Été/Noël.jpg");
+    REQUIRE(path);
+    CHECK(*path == root.path() / utf8_path("Été") / utf8_path("Noël.jpg"));
+}
+
 TEST_CASE("un lien symbolique vers un dossier n'est pas suivi")
 {
     TempDir root;

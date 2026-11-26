@@ -137,20 +137,22 @@ public:
     {
         return {};
     }
-    std::size_t read_head(std::string_view relative_path, std::span<std::byte> buffer,
-                          std::error_code& error) override
+    std::size_t read_range(std::string_view relative_path, std::uint64_t offset,
+                           std::span<std::byte> buffer, std::error_code& error) override
     {
         requested_path = std::string(relative_path);
+        requested_offset = offset;
         requested_size = buffer.size();
         error = error_;
-        if (error)
+        if (error || offset >= content_.size())
             return 0;
-        const auto count = std::min(buffer.size(), content_.size());
-        std::copy_n(content_.begin(), count, buffer.begin());
+        const auto count = std::min(buffer.size(), content_.size() - static_cast<std::size_t>(offset));
+        std::copy_n(content_.begin() + static_cast<std::ptrdiff_t>(offset), count, buffer.begin());
         return count;
     }
 
     std::string requested_path;
+    std::uint64_t requested_offset = 1;
     std::size_t requested_size = 0;
 
 private:
@@ -313,6 +315,7 @@ TEST_CASE("la signature est lue dans la source")
     CHECK(check.detected == MediaFormat::cr3);
     CHECK(source.requested_path == "DCIM/100CANON/IMG_0001.CR3");
     CHECK(source.requested_size == signature_head_size);
+    CHECK(source.requested_offset == 0);
 
     // Seuls les octets réellement lus comptent : un fichier « IIU » n'est pas
     // complété par le zéro qui suit dans le tampon, ce qui en ferait un RW2.
