@@ -28,6 +28,12 @@ FetchContent_MakeAvailable(ZLIB)
 # construit avec CMAKE_COMPILE_WARNING_AS_ERROR.
 set_target_properties(zlibstatic PROPERTIES COMPILE_WARNING_AS_ERROR OFF)
 
+# wxWidgets, pour écrire son script wx-config, lit l'OUTPUT_NAME de chaque
+# bibliothèque dont il dépend, et à défaut leur LOCATION, que CMake refuse de
+# donner pour une cible construite. zlib ne pose que ARCHIVE_OUTPUT_NAME, qui
+# garde la main sur le nom du fichier.
+set_target_properties(zlibstatic PROPERTIES OUTPUT_NAME z)
+
 # zlib ne nomme ZLIB::ZLIB que sa version partagée.
 add_library(ZLIB::ZLIB ALIAS zlibstatic)
 
