@@ -6,6 +6,8 @@ add_library(transfertphoto_core STATIC
     dating.hpp
     destination.cpp
     destination.hpp
+    duplicates.cpp
+    duplicates.hpp
     directory_source.cpp
     directory_source.hpp
     entry_filter.cpp

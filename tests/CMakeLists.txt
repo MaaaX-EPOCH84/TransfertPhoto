@@ -24,6 +24,7 @@ add_executable(transfertphoto_tests
     companion_test.cpp
     dating_test.cpp
     destination_test.cpp
+    duplicates_test.cpp
     directory_source_test.cpp
     entry_filter_test.cpp
     exif_samples.hpp

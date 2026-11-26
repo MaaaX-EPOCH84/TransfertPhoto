@@ -28,6 +28,7 @@ public:
     bool vanishes_on_failure = false; // une lecture en échec emporte la source
     std::size_t largest_request = 0;
     std::map<std::string, int> reads; // lectures par chemin
+    std::uint64_t bytes_read = 0;     // octets rendus, toutes lectures confondues
 
     std::string display_name() const override { return "mémoire"; }
     bool is_available() const override { return available; }
@@ -57,6 +58,7 @@ public:
         const auto count = std::min(buffer.size(), content.size() - start);
         for (std::size_t i = 0; i < count; ++i)
             buffer[i] = static_cast<std::byte>(content[start + i]);
+        bytes_read += count;
         return count;
     }
 
