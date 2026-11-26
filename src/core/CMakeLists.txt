@@ -2,6 +2,8 @@
 add_library(transfertphoto_core STATIC
     companion.cpp
     companion.hpp
+    dating.cpp
+    dating.hpp
     directory_source.cpp
     directory_source.hpp
     entry_filter.cpp

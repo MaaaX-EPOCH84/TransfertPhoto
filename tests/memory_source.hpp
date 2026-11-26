@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <map>
 #include <optional>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -21,11 +22,15 @@ class MemorySource final : public transfertphoto::Source {
 public:
     std::map<std::string, std::vector<std::uint8_t>> contents;
     std::map<std::string, std::filesystem::path> local_paths;
-    std::error_code failure;
+    std::error_code failure;          // rendue par toute lecture
+    std::set<std::string> failing;    // chemins dont la lecture échoue
+    bool available = true;
+    bool vanishes_on_failure = false; // une lecture en échec emporte la source
     std::size_t largest_request = 0;
+    std::map<std::string, int> reads; // lectures par chemin
 
     std::string display_name() const override { return "mémoire"; }
-    bool is_available() const override { return true; }
+    bool is_available() const override { return available; }
     transfertphoto::ScanResult scan(const std::function<void(const transfertphoto::SourceEntry&)>&,
                                     std::stop_token) override
     {
@@ -36,9 +41,15 @@ public:
                            std::span<std::byte> buffer, std::error_code& error) override
     {
         largest_request = std::max(largest_request, buffer.size());
+        ++reads[std::string(relative_path)];
         error = failure;
-        if (error)
+        if (!error && (!available || failing.contains(std::string(relative_path))))
+            error = std::make_error_code(std::errc::io_error);
+        if (error) {
+            if (vanishes_on_failure)
+                available = false;
             return 0;
+        }
         const auto& content = contents.at(std::string(relative_path));
         if (offset >= content.size())
             return 0;
