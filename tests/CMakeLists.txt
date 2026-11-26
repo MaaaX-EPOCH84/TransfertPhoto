@@ -24,6 +24,7 @@ add_executable(transfertphoto_tests
     byte_compare_test.cpp
     companion_test.cpp
     dating_test.cpp
+    destination_path_test.cpp
     destination_test.cpp
     duplicate_decisions_test.cpp
     duplicate_situations_test.cpp
