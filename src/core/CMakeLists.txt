@@ -20,7 +20,9 @@ add_library(transfertphoto_core STATIC
     source_io.cpp
     source_io.hpp
     version.cpp
-    version.hpp)
+    version.hpp
+    video_date.cpp
+    video_date.hpp)
 add_library(transfertphoto::core ALIAS transfertphoto_core)
 
 target_compile_features(transfertphoto_core PUBLIC cxx_std_20)

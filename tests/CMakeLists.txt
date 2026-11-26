@@ -34,7 +34,9 @@ add_executable(transfertphoto_tests
     photo_date_test.cpp
     source_io_test.cpp
     test_files.hpp
-    version_test.cpp)
+    version_test.cpp
+    video_date_test.cpp
+    video_samples.hpp)
 target_link_libraries(transfertphoto_tests PRIVATE
     transfertphoto::core
     transfertphoto::exiv2

@@ -34,6 +34,14 @@ struct LocalDateTime {
 // « AAAA-MM-JJ HH:MM:SS », pour le journal et les messages des tests.
 [[nodiscard]] std::string to_string(const LocalDateTime& value);
 
+// Un instant, en secondes depuis le 1er janvier 1970 UTC, en calendrier UTC.
+[[nodiscard]] LocalDateTime utc_from_unix_seconds(std::int64_t seconds) noexcept;
+
+// Le même instant à l'heure locale de cette machine, heure d'été comprise, par
+// les règles du système. Si le système ne sait pas convertir cet instant
+// (Windows refuse ce qui précède 1970), il est rendu en UTC.
+[[nodiscard]] LocalDateTime local_from_unix_seconds(std::int64_t seconds) noexcept;
+
 // Lit une date EXIF, « AAAA:MM:JJ HH:MM:SS ». Tolère les tirets dans la date
 // et un T entre la date et l'heure, que certains logiciels écrivent, et ce qui
 // suit les secondes (fuseau, zéro final). Rien pour une date vide, à blancs ou

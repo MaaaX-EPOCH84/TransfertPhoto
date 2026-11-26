@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdio>
+#include <ctime>
 
 namespace transfertphoto {
 namespace {
@@ -57,6 +58,56 @@ std::string to_string(const LocalDateTime& value)
     std::snprintf(text.data(), text.size(), "%04d-%02u-%02u %02u:%02u:%02u", value.year, value.month,
                   value.day, value.hour, value.minute, value.second);
     return text.data();
+}
+
+LocalDateTime utc_from_unix_seconds(std::int64_t seconds) noexcept
+{
+    // Jours depuis 1970 et secondes dans le jour, arrondis vers le passé.
+    std::int64_t days = seconds / 86'400;
+    std::int64_t in_day = seconds % 86'400;
+    if (in_day < 0) {
+        in_day += 86'400;
+        --days;
+    }
+
+    // Du nombre de jours à la date civile, par ères de 400 ans (algorithme
+    // « civil_from_days » de Howard Hinnant).
+    days += 719'468;
+    const std::int64_t era = (days >= 0 ? days : days - 146'096) / 146'097;
+    const auto day_of_era = static_cast<unsigned>(days - era * 146'097);
+    const unsigned year_of_era = (day_of_era - day_of_era / 1460 + day_of_era / 36'524 - day_of_era / 146'096) / 365;
+    const unsigned day_of_year = day_of_era - (365 * year_of_era + year_of_era / 4 - year_of_era / 100);
+    const unsigned shifted_month = (5 * day_of_year + 2) / 153;
+
+    LocalDateTime value;
+    value.day = day_of_year - (153 * shifted_month + 2) / 5 + 1;
+    value.month = shifted_month < 10 ? shifted_month + 3 : shifted_month - 9;
+    value.year = static_cast<int>(static_cast<std::int64_t>(year_of_era) + era * 400 + (value.month <= 2 ? 1 : 0));
+    value.hour = static_cast<unsigned>(in_day / 3600);
+    value.minute = static_cast<unsigned>((in_day % 3600) / 60);
+    value.second = static_cast<unsigned>(in_day % 60);
+    return value;
+}
+
+LocalDateTime local_from_unix_seconds(std::int64_t seconds) noexcept
+{
+    const auto instant = static_cast<std::time_t>(seconds);
+    std::tm local{};
+#ifdef _WIN32
+    if (::localtime_s(&local, &instant) != 0)
+        return utc_from_unix_seconds(seconds);
+#else
+    if (::localtime_r(&instant, &local) == nullptr)
+        return utc_from_unix_seconds(seconds);
+#endif
+    LocalDateTime value;
+    value.year = local.tm_year + 1900;
+    value.month = static_cast<unsigned>(local.tm_mon + 1);
+    value.day = static_cast<unsigned>(local.tm_mday);
+    value.hour = static_cast<unsigned>(local.tm_hour);
+    value.minute = static_cast<unsigned>(local.tm_min);
+    value.second = static_cast<unsigned>(local.tm_sec);
+    return value;
 }
 
 std::optional<LocalDateTime> parse_exif_date_time(std::string_view text)
